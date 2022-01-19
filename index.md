@@ -1,37 +1,44 @@
-## Welcome to GitHub Pages
+Community
+IRC: irc://irc.freenode.net/#phh-treble
+WebIRC: http://webchat.freenode.net/?channels=%23phh-treble&uio=d4
+Matrix: #phh-treble:matrix.org
+Telegram https://t.me/phhtreble
+xda-developers threads: https://forum.xda-developers.com/search.php?do=finduser&u=1915408&starteronly=1
+How to build
+clone this repository
+call the build scripts from a separate directory
+For example:
 
-You can use the [editor on GitHub](https://github.com/Ravlissimo/treble_experimentations/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+git clone https://github.com/phhusson/treble_experimentations
+mkdir Lineage; cd Lineage
+bash ../treble_experimentations/build-rom.sh android-8.1 lineage
+More flexible build script
+(this has been tested much less)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+bash ../treble_experimentations/build-dakkar.sh rr
+arm-aonly-gapps-su
+arm64-ab-go-nosu
 
-### Markdown
+The script should provide a help message if you pass something it doesn't understand
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Using Docker
+clone this repository, then:
 
-```markdown
-Syntax highlighted code block
+docker build -t treble docker/
 
-# Header 1
-## Header 2
-### Header 3
+docker container create --name treble treble
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Ravlissimo/treble_experimentations/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+docker run -ti \
+    -v $(pwd):/treble \
+    -v $(pwd)/../treble_output:/treble_output \
+    -w /treble_output \
+    treble \
+    /bin/bash /treble/build-dakkar.sh rr \
+    arm-aonly-gapps-su \
+    arm64-ab-go-nosu
+Conventions for commit messages:
+[UGLY] Please make this patch disappear as soon as possible
+[master] tag means that the commit should be dropped in a future rebase
+[device] tag means this change is device-specific workaround
+::device name:: will try to describe which devices are concerned by this change
+[userfriendly] This commit is NOT used for hardware support, but to make the rom more user friendly
